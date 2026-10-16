@@ -5,11 +5,9 @@ import java.sql.PreparedStatement;
 
 public class DB {
 
-    public static boolean insert(Student st){
-        boolean f = false;
+    public static void createTable(){
+        try (Connection con = CP.createc()) {
 
-        try (Connection con = DBConnection.getConnection()) {
-            Connection con = CP.createc();
             String sql = """
                     CREATE TABLE IF NOT EXISTS student (
                         id INT PRIMARY KEY AUTO_INCREMENT,
@@ -27,8 +25,13 @@ public class DB {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    public static boolean insert(Student st){
+        boolean f = false;
         
         try{
+            Connection con = CP.createc();
             String q = "insert into student(name , phone , city) values(? , ? , ?)";
 
             PreparedStatement pstmt = con.prepareStatement(q);
